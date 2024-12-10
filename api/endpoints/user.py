@@ -40,7 +40,7 @@ async def get_list(user_id: int, wordlist_id: int, service: WordService = Depend
         words.append(userword)
     return words
 
-@router.get("/{user_id}/words/add/{wordlist_id}")
+@router.get("/{user_id}/wordlists/add/{wordlist_id}")
 async def add_list(user_id: int, wordlist_id: int, uwl_service: UserWordListService = Depends(userwordlist_service), uw_service: UserWordService = Depends(userword_service), w_service: WordService = Depends(word_service)) -> bool:
     uwl = UserWordList(id=user_id+wordlist_id, user_id=user_id, wordlist_id=wordlist_id)
     await uwl_service.add(uwl)
@@ -50,7 +50,7 @@ async def add_list(user_id: int, wordlist_id: int, uwl_service: UserWordListServ
         await uw_service.add(uw)
     return True
 
-@router.get("/{user_id}/words/remove/{wordlist_id}")
+@router.get("/{user_id}/wordlists/remove/{wordlist_id}")
 async def remove_list(user_id: int, wordlist_id: int, uwl_service: UserWordListService = Depends(userwordlist_service), uw_service: UserWordService = Depends(userword_service), w_service: WordService = Depends(word_service)) -> bool:
     await uwl_service.remove(user_id+wordlist_id)
     word_ids = [w.id for w in await w_service.get_by_wordlist_id(wordlist_id)]
