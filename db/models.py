@@ -36,3 +36,8 @@ class UserWord(Base):
     user_id = Column(BigInteger, nullable=False)
     word_id = Column(Integer, ForeignKey("word.id"), nullable=False)
     learned = Column(Integer, nullable=False)
+
+
+class User(Base):
+    __tablename__ = "user"
+    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)

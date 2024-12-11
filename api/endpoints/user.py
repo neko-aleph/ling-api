@@ -2,9 +2,11 @@ from gettext import translation
 
 from fastapi import APIRouter
 from fastapi.params import Depends
+from sqlalchemy.testing.pickleable import User
 
 from db.models import UserWord as UW
 from db.models import UserWordList
+from dependencies.user_service import user_service
 from dependencies.userword_service import userword_service
 from dependencies.userwordlist_service import userwordlist_service
 from dependencies.word_service import word_service
@@ -13,6 +15,7 @@ from schemas.results import Results
 from schemas.user_word import UserWord
 from schemas.word import Word
 from schemas.word_list import WordList
+from services.user_service import UserService
 from services.userword_service import UserWordService
 from services.userwordlist_service import UserWordListService
 from services.word_service import WordService
@@ -70,3 +73,7 @@ async def upload_results(user_id: int, results: Results, uw_service: UserWordSer
         if result.correct:
             await uw_service.increment_word_learnedness(user_id, result.id)
     return True
+
+@router.get("/new")
+async def create_user(service: UserService = Depends(user_service)) -> int:
+    return await service.create_user()
